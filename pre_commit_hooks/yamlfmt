@@ -58,6 +58,12 @@ class Cli:
             help="maximum line width",
             )
         parser.add_argument(
+            "--no-explicit-start",
+            action="store_false",
+            dest='explicit_start',
+            help="disable explicit start (`---`) for all files"
+            )
+        parser.add_argument(
             "file_names",
             metavar="FILE_NAME",
             nargs="*",
@@ -79,7 +85,7 @@ class Formatter:
             offset=kwargs.get("offset", DEFAULT_INDENT["offset"]),
             )
         yaml.top_level_colon_align = kwargs.get("colons", False)
-        yaml.explicit_start = True
+        yaml.explicit_start = kwargs.get("explicit_start", True)
         yaml.width = kwargs.get("width", None)
 
         self.yaml = yaml
@@ -129,7 +135,8 @@ if __name__ == "__main__":
         sequence=ARGS.sequence,
         offset=ARGS.offset,
         colons=ARGS.colons,
-        width=ARGS.width
+        width=ARGS.width,
+        explicit_start=ARGS.explicit_start,
         )
     for file_name in ARGS.file_names:
         FORMATTER.format(file_name)
