@@ -63,6 +63,12 @@ class Cli:
             nargs="*",
             help="space-separated list of YAML file names",
             )
+        parser.add_argument(
+            "--explicit-start",
+            default=True,
+            action="store_true",
+            help="enforce explicit start (`---`) for all files"
+        )
         self.parser = parser
 
 
@@ -79,7 +85,7 @@ class Formatter:
             offset=kwargs.get("offset", DEFAULT_INDENT["offset"]),
             )
         yaml.top_level_colon_align = kwargs.get("colons", False)
-        yaml.explicit_start = True
+        yaml.explicit_start = kwargs.get("explicit_start")
         yaml.width = kwargs.get("width", None)
 
         self.yaml = yaml
